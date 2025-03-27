@@ -23,12 +23,12 @@ public partial class HomePage : ContentPage
 		await Navigation.PushAsync(new AddTaskPage(_databaseService));
 	}
 
-    private void OnTaskSelected(object sender, SelectedItemChangedEventArgs e)
+    private async void OnTaskSelected(object sender, SelectedItemChangedEventArgs e)
     {
         if (e.SelectedItem == null) return;
 
         var selectedTask = e.SelectedItem as TaskModel;
-        DisplayAlert("Tarea seleccionada", selectedTask?.Title, "OK");
+        await Navigation.PushAsync(new EditTaskPage(_databaseService, selectedTask));
 
         TaskListView.SelectedItem = null;
     }

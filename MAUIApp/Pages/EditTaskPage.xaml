@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MAUIApp.Pages.EditTaskPage"
+             Title="EditTaskPage">
+    <VerticalStackLayout>
+        <Label Text="Editar Tarea" FontSize="24" />
+        <Entry x:Name="TitleEntry" Placeholder="Titulo de la Tarea" />
+        <Editor x:Name="DescriptionEditor" Placeholder="Descripcion" HeightRequest="100" />
+        <Button Text="Guardar Cambios" Clicked="OnSaveChangesClicked"/>
+        <Button Text="Borrar Cambios" Clicked="OnDeleteTaskClicked" Background="Red" TextColor="White"/>
+    </VerticalStackLayout>
+</ContentPage>

@@ -8,6 +8,10 @@ public partial class HomePage : ContentPage
 {
 	private readonly DatabaseService _databaseService;
     public ObservableCollection<TaskModel> Tasks { get; set; } = new();
+    public ObservableCollection<TaskModel> FilteredTasks { get; set; } = new();
+
+    private string searchText = string.Empty;
+    private string selectedFilter = "Todas";
 
     public HomePage(DatabaseService databaseService)
 	{
@@ -32,6 +36,8 @@ public partial class HomePage : ContentPage
                 Tasks.Clear();
                 foreach (var task in tasksList)
                     Tasks.Add(task);
+
+                FilterTasks();
             }
         }
         catch (Exception ex)
@@ -40,6 +46,35 @@ public partial class HomePage : ContentPage
         }
     }
 
+    private void FilterTasks()
+    {
+        FilteredTasks.Clear();
+        var filtered = Tasks.Where(t =>
+            (string.IsNullOrEmpty(searchText) || t.Title.Contains(searchText, StringComparison.OrdinalIgnoreCase)) &
+            (selectedFilter == "Todas" ||
+            (selectedFilter == "Completadas" && t.IsCompleted) || 
+            (selectedFilter == "Pendientes" && t.IsCompleted))
+        );
+
+        foreach (var task in filtered)
+        {
+            FilteredTasks.Add(task);
+        }
+    }
+
+    private void OnSearchTextChanged(object sender, TextChangedEventArgs e)
+    {
+        searchText = e.NewTextValue;
+        FilterTasks();
+    }
+
+    private void OnFilterChanged(object sender, EventArgs e)
+    {
+        var picker = sender as Picker;
+        selectedFilter = picker.SelectedItem?.ToString() ?? "Todas";
+        FilterTasks();
+    }
+    
     private async void OnAddTaskClicked(object sender, EventArgs e)
 	{
 		await Navigation.PushAsync(new AddTaskPage(_databaseService));
@@ -65,6 +100,7 @@ public partial class HomePage : ContentPage
 
                 task.IsCompleted = e.Value;
                 await _databaseService.SaveTaskAsync(task);
+                FilterTasks();
             }
             else
             {

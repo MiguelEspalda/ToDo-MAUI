@@ -5,8 +5,16 @@
              Title="SnowPage">
     <VerticalStackLayout Padding="20">
         <Label Text="Tareas Pendientes" FontSize="20" FontAttributes="Bold" />
+        <SearchBar x:Name="SearchBar" Placeholder="Buscar tarea..." TextChanged="OnSearchTextChanged"/>
+        <Picker x:Name="FilterPicker" Title="Filtrar por estado" SelectedIndexChanged="OnFilterChanged">
+            <Picker.Items>
+                <x:String>Todas</x:String>
+                <x:String>Completadas</x:String>
+                <x:String>Pendientes</x:String>
+            </Picker.Items>
+        </Picker>
         <ListView x:Name="TaskListView"
-          ItemsSource="{Binding Tasks}"
+          ItemsSource="{Binding FilteredTasks}"
           HasUnevenRows="True">
             <ListView.ItemTemplate>
                 <DataTemplate>

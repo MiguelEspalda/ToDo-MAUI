@@ -14,12 +14,14 @@ public partial class EditTaskPage : ContentPage
 		_task = task;
 		TitleEntry.Text = _task.Title;
 		DescriptionEditor.Text = _task.Description;
+		CompletedCheckbox.IsChecked = _task.IsCompleted;
 	}
 
 	private async void OnSaveChangesClicked(object sender, EventArgs e)
 	{
 		_task.Title = TitleEntry.Text;
 		_task.Description = DescriptionEditor.Text;
+		_task.IsCompleted = CompletedCheckbox.IsChecked;
 
 		await _databaseService.SaveTaskAsync(_task);
 		await Navigation.PopAsync();

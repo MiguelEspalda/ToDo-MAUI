@@ -4,15 +4,22 @@
              x:Class="MAUIApp.Pages.HomePage"
              Title="SnowPage">
     <VerticalStackLayout Padding="20">
-        <Label Text="Tareas Pendientes" FontSize="24" />
-        <ListView x:Name="TaskListView" ItemSelected="OnTaskSelected">
+        <Label Text="Tareas Pendientes" FontSize="20" FontAttributes="Bold" />
+        <ListView x:Name="TaskListView"
+          ItemsSource="{Binding Tasks}"
+          HasUnevenRows="True">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <StackLayout Orientation="Horizontal">
-                            <Label Text="{Binding Title}" FontSize="18" />
-                            <CheckBox IsChecked="{Binding IsCompleted}" />
-                        </StackLayout>
+                        <HorizontalStackLayout Padding="5">
+                            <CheckBox IsChecked="{Binding IsCompleted}"
+                              CheckedChanged="OnTaskCompletedChanged"/>
+                            <Label Text="{Binding Title}" VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Tapped="OnTaskTapped"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>

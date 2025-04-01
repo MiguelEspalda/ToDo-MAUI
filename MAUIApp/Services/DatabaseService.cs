@@ -24,9 +24,12 @@ namespace MAUIApp.Services
             return _database.Table<TaskModel>().ToListAsync();
         }
 
-        public Task<int> SaveTaskAsync(TaskModel task)
+        public async Task SaveTaskAsync(TaskModel task)
         {
-            return task.Id == 0 ? _database.InsertAsync(task) : _database.UpdateAsync(task);
+            if (task.Id == 0)
+                await _database.InsertAsync(task);
+            else
+                await _database.UpdateAsync(task);
         }
 
         public Task<int> DeleteTaskAsync(TaskModel task)

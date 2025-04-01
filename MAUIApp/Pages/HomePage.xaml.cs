@@ -34,7 +34,7 @@ public partial class HomePage : ContentPage
             if (tasksList != null)
             {
                 Tasks.Clear();
-                foreach (var task in tasksList)
+                foreach (var task in tasksList.OrderByDescending(t => GetPriorityValue(t.Priority)))
                     Tasks.Add(task);
 
                 FilterTasks();
@@ -44,6 +44,16 @@ public partial class HomePage : ContentPage
         {
             await DisplayAlert("Error", $"Error al cargar tareas: {ex.Message}", "OK");
         }
+    }
+
+    private int GetPriorityValue(string priority)
+    {
+        return priority switch
+        {
+            "Alta" => 3,
+            "Media" => 2,
+            "Baja" => 1,
+        };
     }
 
     private void FilterTasks()
@@ -111,5 +121,30 @@ public partial class HomePage : ContentPage
         {
             await DisplayAlert("Error", $"Error al actualizar tarea: {ex.Message}", "OK");
         }
+    }
+
+    private void OnSortChanged(object sender, EventArgs e)
+    {
+        if (SortPicker.SelectedIndex == -1) return;
+
+        var sortedTasks = Tasks.ToList();
+        switch (SortPicker.SelectedIndex)
+        {
+            case 0:
+                sortedTasks = sortedTasks.OrderByDescending(t => GetPriorityValue(t.Priority)).ToList();
+                break;
+            case 1:
+                sortedTasks = sortedTasks.OrderBy(t => GetPriorityValue(t.Priority)).ToList();
+                break;
+            case 2:
+                sortedTasks = sortedTasks.OrderByDescending(t => GetPriorityValue(t.Priority)).ToList();
+                break;
+            case 3:
+                sortedTasks = sortedTasks.OrderBy(t => GetPriorityValue(t.Priority)).ToList();
+                break;
+        }
+        Tasks.Clear();
+        foreach(var task in sortedTasks)
+            Tasks.Add(task);
     }
 }	

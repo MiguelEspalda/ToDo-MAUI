@@ -7,6 +7,10 @@
         <Label Text="Nueva Tarea" FontSize="24" />
         <Entry x:Name="TitleEntry" Placeholder="Titulo de la Tarea" />
         <Editor x:Name="DescriptionEditor" Placeholder="Descripción" HeightRequest="100" />
+        <Picker x:Name="PriorityPicker"
+                Title="Seleccionar Prioridad"
+                SelectedItem="{Binding Task.Priority}"
+                ItemsSource="{Binding Priorities}"/>
         <Button Text="Guardar" Clicked="OnSaveTaskClicked" />
     </VerticalStackLayout>
 </ContentPage>
